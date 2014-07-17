@@ -4,7 +4,7 @@
  *
  * Licensed under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
- * 
+ *
  * Copyright 2013, Codrops
  * http://www.codrops.com
  */
@@ -24,15 +24,20 @@ var cbpBGSlideshow = (function() {
 		// timeout
 		slideshowtime,
 		// true if the slideshow is active
-		isSlideshowActive = true,
+		isSlideshowActive = true;
 		// it takes 3.5 seconds to change the background image
-		interval = 3500;
+		var defaults = {
+		      interval: 3500,
+		      onChange: function(){}
+		};
 
 	function init( config ) {
+    defaults.interval = (config.interval) ? config.interval: defaults.interval;
+    defaults.onChange = (config.onChange) ? config.onChange: defaults.onChange;
 
 		// preload the images
 		$slideshow.imagesLoaded( function() {
-			
+
 			if( Modernizr.backgroundsize ) {
 				$items.each( function() {
 					var $item = $( this );
@@ -51,7 +56,7 @@ var cbpBGSlideshow = (function() {
 			startSlideshow();
 
 		} );
-		
+
 	}
 
 	function initEvents() {
@@ -70,16 +75,16 @@ var cbpBGSlideshow = (function() {
 
 		} );
 
-		navigation.$navPrev.on( 'click', function() { 
-			navigate( 'prev' ); 
-			if( isSlideshowActive ) { 
-				startSlideshow(); 
-			} 
+		navigation.$navPrev.on( 'click', function() {
+			navigate( 'prev' );
+			if( isSlideshowActive ) {
+				startSlideshow();
+			}
 		} );
-		navigation.$navNext.on( 'click', function() { 
-			navigate( 'next' ); 
-			if( isSlideshowActive ) { 
-				startSlideshow(); 
+		navigation.$navNext.on( 'click', function() {
+			navigate( 'next' );
+			if( isSlideshowActive ) {
+				startSlideshow();
 			}
 		} );
 
@@ -89,7 +94,7 @@ var cbpBGSlideshow = (function() {
 
 		// current item
 		var $oldItem = $items.eq( current );
-		
+
 		if( direction === 'next' ) {
 			current = current < itemsCount - 1 ? ++current : 0;
 		}
@@ -102,6 +107,8 @@ var cbpBGSlideshow = (function() {
 		// show / hide items
 		$oldItem.css( 'opacity', 0 );
 		$newItem.css( 'opacity', 1 );
+		// pass in the current slide as well as the current slide index
+		defaults.onChange($newItem, current);
 
 	}
 
@@ -112,7 +119,7 @@ var cbpBGSlideshow = (function() {
 		slideshowtime = setTimeout( function() {
 			navigate( 'next' );
 			startSlideshow();
-		}, interval );
+		}, defaults.interval );
 
 	}
 
