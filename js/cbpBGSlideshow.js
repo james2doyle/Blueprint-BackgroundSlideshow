@@ -122,12 +122,21 @@ var cbpBGSlideshow = (function() {
 		}, defaults.interval );
 
 	}
+	
+	function goto(index) {
+		isSlideshowActive = false;
+		clearTimeout( slideshowtime );
+		$items.css('opacity', 0);
+		$items.eq(index).css('opacity', 1);
+		defaults.onChange($newItem, current);
+		startSlideshow();
+	}
 
 	function stopSlideshow() {
 		isSlideshowActive = false;
 		clearTimeout( slideshowtime );
 	}
 
-	return { init : init };
+	return { init : init, goto : goto };
 
 })();
