@@ -128,6 +128,7 @@ var cbpBGSlideshow = (function() {
 		clearTimeout( slideshowtime );
 		$items.css('opacity', 0);
 		$items.eq(index).css('opacity', 1);
+		current = index;
 		defaults.onChange($items.eq(index), index);
 		startSlideshow();
 	}
